@@ -1,5 +1,5 @@
 # HACON
-Lot's of cyber security tools
+Lots of cyber security tool
 # Install
 ```
 pip3 install https://github.com/onuratakan/HACON/archive/master.zip
