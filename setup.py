@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setup(name='HACON',
 version='pre-alpha',
-description="""Lot's of cyber security tools""",
+description="""Lots of cyber security tool""",
 url='https://githpipub.com/onuratakan/HACON',
 author='Onur Atakan ULUSOY',
 author_email='atadogan06@gmail.com',
