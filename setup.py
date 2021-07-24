@@ -1,14 +1,11 @@
 from setuptools import setup
 
-import os
 from setuptools import setup
 
-with open('requirements.txt') as f:
-    required = f.read().splitlines()
 
 
 setup(name='HACON',
-version='0.1.1',
+version='0.1.2',
 description="""Lots of cyber security tool""",
 long_description="""
 # HACON
@@ -37,6 +34,13 @@ package_dir={'':'src'},
 package_data={
     "hacon": ["wordlists/*.txt"],
 },
-install_requires=required,
+install_requires=[
+    "scapy==2.4.5",
+    "prettytable==2.1.0",
+    "wcwidth==0.2.5",
+    "dnspython==2.1.0",
+    "future==0.18.2",
+    "python_whois==0.7.3"
+],
 python_requires='>=3.6',
 zip_safe=False)
