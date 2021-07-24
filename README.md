@@ -2,7 +2,7 @@
 Lots of cyber security tool
 # Install
 ```
-pip3 install https://github.com/onuratakan/HACON/archive/master.zip
+pip3 install HACON
 ```
 # Usage
 ```python

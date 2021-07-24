@@ -6,17 +6,29 @@ from setuptools import setup
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
-try:
-    import pypandoc
-    long_description = pypandoc.convert('README.md', 'rst')
-except(IOError, ImportError):
-    long_description = open('README.md').read()
 
 setup(name='HACON',
-version='0.1.2-alpha',
+version='0.1.1',
 description="""Lots of cyber security tool""",
-long_description=long_description,
-url='https://githpipub.com/onuratakan/HACON',
+long_description="""
+# HACON
+Lots of cyber security tool
+# Install
+```
+pip3 install HACON
+```
+# Usage
+```python
+from hacon import HACON
+
+HACON.arguments("-h")
+```
+# Reminder
+Important Information and Reminder Information and programs in all repositories are created for testing purposes. Any legal responsibility belongs to the person or organization that uses it.
+
+""",
+long_description_content_type='text/markdown',
+url='https://github.com/onuratakan/HACON',
 author='Onur Atakan ULUSOY',
 author_email='atadogan06@gmail.com',
 license='MIT',
