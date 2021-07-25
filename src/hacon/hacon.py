@@ -2,7 +2,8 @@ import random
 import socket
 import os
 import argparse
-from scapy.all import send, IP, ICMP, srp, ARP, Ether, sniff
+from scapy.all import send, IP, ICMP, srp, ARP, Ether, sniff, Raw
+from scapy_http import http
 from prettytable import PrettyTable
 import requests
 import json
@@ -802,6 +803,21 @@ class hacon:
             send(ARP(op=2,pdst=gateway_ip,hwdst=gateway_mac,psrc=target,hwsrc=target_mac),verbose=False,count=6)
 
         self.printg(f"[*] Finished ARP poisoning attack on {target}")
+
+    def http_packet_analyzer(self):
+        """
+        Analyze HTTP packets
+        """
+        print()
+        self.printg(f"[*] Starting HTTP packet analyzer on {self.get_interface()}")
+        
+        def analyze_packets(packet):
+            if packet.haslayer(http.HTTPRequest):
+                print(packet.show())
+
+        sniff(iface=self.get_interface(),store=False,prn=analyze_packets)
+
+        self.printg(f"[*] Finished HTTP packet analyzer on {self.get_interface()}")
         
     def arguments(self, arguments = None):
         """
@@ -878,6 +894,8 @@ atadogan06@gmail.com - onuratakan
 
 
         parser.add_argument('-arpp', '--arpspoosoning', type=str, nargs=1, metavar="Gateway ip", help='ARP spoofing')
+
+        parser.add_argument('-httppa', '--httppacketanalyzer', action="store_true", help='HTTP packet analyzer')
 
 
         if not arguments is None:
@@ -990,6 +1008,9 @@ atadogan06@gmail.com - onuratakan
 
         if not args.arpspoosoning is None:
             self.arp_poisoning(args.arpspoosoning[0])
+
+        if args.httppacketanalyzer:
+            self.http_packet_analyzer()
 
 
 

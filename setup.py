@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name='HACON',
-version='0.2.0',
+version='0.3.0',
 description="""Lots of cyber security tool""",
 long_description="""
 # HACON
@@ -47,6 +47,7 @@ package_data={
 },
 install_requires=[
     "scapy==2.4.5",
+    "scapy-http==1.8.2",
     "prettytable==2.1.0",
     "wcwidth==0.2.5",
     "dnspython==2.1.0",
