@@ -838,6 +838,8 @@ atadogan06@gmail.com - onuratakan
             args = parser.parse_args(arguments.split(" "))
         else:
             args = parser.parse_args()
+            if len(sys.argv) < 2:
+                parser.print_help()
 
 
         self.set_verbose(args.verbose)
