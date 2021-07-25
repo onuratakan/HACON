@@ -2,7 +2,7 @@ import random
 import socket
 import os
 import argparse
-from scapy.all import send, IP, ICMP, srp, ARP, Ether, sniff, Raw
+from scapy.all import send, IP, ICMP, srp, ARP, Ether, sniff, TCP, UDP, DNS
 from scapy_http import http
 from prettytable import PrettyTable
 import requests
@@ -804,6 +804,7 @@ class hacon:
 
         self.printg(f"[*] Finished ARP poisoning attack on {target}")
 
+
     def http_packet_analyzer(self):
         """
         Analyze HTTP packets
@@ -818,6 +819,34 @@ class hacon:
         sniff(iface=self.get_interface(),store=False,prn=analyze_packets)
 
         self.printg(f"[*] Finished HTTP packet analyzer on {self.get_interface()}")
+
+
+    def network_analyzer(self):
+        """
+        Analyze network packets
+        """
+        print()
+        self.printg(f"[*] Starting network analyzer on {self.get_interface()}")
+        
+        def analyze_packets(packet):
+            if packet.haslayer(ARP):
+                self.printc(f"[-] Detected ARP packet")
+            if packet.haslayer(IP):
+                self.printc(f"[-] Detected IP packet")
+            if packet.haslayer(TCP):
+                self.printc(f"[-] Detected TCP packet")
+            if packet.haslayer(UDP):
+                self.printc(f"[-] Detected UDP packet")
+            if packet.haslayer(ICMP):
+                self.printc(f"[-] Detected ICMP packet")
+            if packet.haslayer(DNS):
+                self.printc(f"[-] Detected DNS packet")
+
+        sniff(iface=self.get_interface(),store=False,prn=analyze_packets)
+
+        self.printg(f"[*] Finished network analyzer on {self.get_interface()}")
+
+
         
     def arguments(self, arguments = None):
         """
@@ -896,6 +925,8 @@ atadogan06@gmail.com - onuratakan
         parser.add_argument('-arpp', '--arpspoosoning', type=str, nargs=1, metavar="Gateway ip", help='ARP spoofing')
 
         parser.add_argument('-httppa', '--httppacketanalyzer', action="store_true", help='HTTP packet analyzer')
+
+        parser.add_argument('-na', '--networkanalyzer', action="store_true", help='Network analyzer')
 
 
         if not arguments is None:
@@ -1011,6 +1042,9 @@ atadogan06@gmail.com - onuratakan
 
         if args.httppacketanalyzer:
             self.http_packet_analyzer()
+
+        if args.networkanalyzer:
+            self.network_analyzer()
 
 
 
