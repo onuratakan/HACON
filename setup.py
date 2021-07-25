@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name='HACON',
-version='0.1.3',
+version='0.1.4',
 description="""Lots of cyber security tool""",
 long_description="""
 # HACON
@@ -14,12 +14,23 @@ Lots of cyber security tool
 ```
 pip3 install HACON
 ```
-# Usage
+# Using
 ```python
 from hacon import HACON
 
 HACON.arguments("-h")
 ```
+
+# With docker
+## Install 
+```
+docker pull ghcr.io/onuratakan/hacon:latest
+```
+## Using
+```
+docker run -it --network=host ghcr.io/onuratakan/hacon
+```
+
 # Reminder
 Important Information and Reminder Information and programs in all repositories are created for testing purposes. Any legal responsibility belongs to the person or organization that uses it.
 
