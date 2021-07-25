@@ -151,6 +151,7 @@ class hacon:
             url = url.replace(":80","")
         self.url = url
 
+
     def get_url(self):
         """
         Get url
@@ -160,6 +161,17 @@ class hacon:
         except:
             self.set_url()
             return self.url
+
+
+    def get_ssl(self):
+        """
+        Get ssl
+        """
+        url = self.get_url()
+        if url.startswith("https"):
+            return True
+        else:
+            return False
 
 
     def set_wordpress(self):
@@ -722,15 +734,16 @@ class hacon:
             try:
                 subdomains = f.readlines()
                 total_len = str(len(subdomains))
+                ssl = self.get_ssl()
                 for subdomain in subdomains:
                     sys.stdout.write("\r" + "[*] Sub domains detection progress " + str(subdomains.index(subdomain)) + "/" + total_len)
-                    sys.stdout.flush()   
-                    url = f"http://{subdomain}.{self.get_target()}"
-                    url2 = f"https://{subdomain}.{self.get_target()}"
+                    sys.stdout.flush()
+                    if ssl:
+                        url = f"https://{subdomain}.{self.get_target()}"
+                    else:
+                        url = f"http://{subdomain}.{self.get_target()}"
                     if self.check_url(url):
                         self.printc(f"[-] {url}")
-                    elif self.check_url(url2):
-                        self.printc(f"[-] {url2}")
             except KeyboardInterrupt:
                 pass
 
@@ -747,10 +760,14 @@ class hacon:
             try:
                 files_and_dirs = f.readlines()
                 total_len = str(len(files_and_dirs))
+                ssl = self.get_ssl()
                 for file_and_dir in files_and_dirs:
                     sys.stdout.write("\r" + "[*] Files and dirs detection progress " + str(files_and_dirs.index(file_and_dir)) + "/" + total_len)
-                    sys.stdout.flush()                   
-                    url = f"{self.get_url()}/{file_and_dir}"
+                    sys.stdout.flush()
+                    if ssl:
+                        url = f"https://{self.get_target()}/{file_and_dir}"
+                    else:
+                        url = f"http://{self.get_target()}/{file_and_dir}"
                     if self.check_url(url):
                         self.printc(f"[-] {url}")
             except KeyboardInterrupt:
