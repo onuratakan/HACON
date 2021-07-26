@@ -23,7 +23,11 @@ docker pull ghcr.io/onuratakan/hacon:latest
 ```
 ## Using
 ```
-docker run -it --network=host ghcr.io/onuratakan/hacon
+docker run -t -i  --network=host ghcr.io/onuratakan/hacon /bin/sh
+```
+and type
+```python
+HACON -h
 ```
 
 # Reminder

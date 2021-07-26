@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name='HACON',
-version='0.5.0',
+version='0.6.0',
 description="""Lots of cyber security tool""",
 long_description="""
 # HACON
@@ -33,7 +33,11 @@ docker pull ghcr.io/onuratakan/hacon:latest
 ```
 ## Using
 ```
-docker run -it --network=host ghcr.io/onuratakan/hacon
+docker run -t -i  --network=host ghcr.io/onuratakan/hacon /bin/sh
+```
+and type
+```python
+HACON -h
 ```
 
 # Reminder
