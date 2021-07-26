@@ -5,10 +5,15 @@ Lots of cyber security tool
 pip3 install HACON
 ```
 # Using
+## In another script
 ```python
 from hacon import HACON
 
 HACON.arguments("-h")
+```
+## In command line
+```python
+HACON -h
 ```
 
 # With docker

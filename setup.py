@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name='HACON',
-version='0.4.0',
+version='0.5.0',
 description="""Lots of cyber security tool""",
 long_description="""
 # HACON
@@ -15,10 +15,15 @@ Lots of cyber security tool
 pip3 install HACON
 ```
 # Using
+## In another script
 ```python
 from hacon import HACON
 
 HACON.arguments("-h")
+```
+## In command line
+```python
+HACON -h
 ```
 
 # With docker
@@ -55,5 +60,8 @@ install_requires=[
     "python_whois==0.7.3",
     "requests==2.25.1"
 ],
+entry_points = {
+    'console_scripts': ['HACON=hacon.hacon:HACON.arguments'],
+},
 python_requires='>=3.6',
 zip_safe=False)
