@@ -933,7 +933,7 @@ atadogan06@gmail.com - onuratakan
         parser.add_argument('-icmpd', '--icmp_dos', type=int, nargs=1, metavar="Amount", help='icmp_dos DoS attack')
         parser.add_argument('-slowlorisd', '--slowloris_dos', type=int, nargs=1, metavar="Amount", help='slowloris_dos attack')
 
-        parser.add_argument('-wsd', '--webservicedetection', action="store_true", help='Wordpress detection')
+        parser.add_argument('-wsd', '--webservicedetection', action="store_true", help='Web service detection')
 
         parser.add_argument('-wpus', '--wordpressuser', action="store_true", help='Wordpress user detection with json')
         parser.add_argument('-wpap', '--wordpressadminpage', action="store_true", help='Wordpress admin page detection')
