@@ -7,4 +7,4 @@ RUN apk add git
 
 RUN pip install HACON
 
-CMD ["HACON -h"]
+CMD ["python3"]
