@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name='HACON',
-version='0.6.0',
+version='0.7.0',
 description="""Lots of cyber security tool""",
 long_description="""
 # HACON
