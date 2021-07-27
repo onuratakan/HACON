@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM python:3.8
 
 LABEL org.opencontainers.image.source https://github.com/onuratakan/HACON
 
