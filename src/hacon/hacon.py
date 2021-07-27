@@ -5,6 +5,7 @@ import argparse
 from scapy.all import send, IP, ICMP, srp, ARP, Ether, sniff, TCP, UDP, DNS
 from scapy_http import http
 from prettytable import PrettyTable
+from mac_vendor_lookup import MacLookup
 import requests
 import json
 import re
@@ -607,9 +608,9 @@ class hacon:
         self.printg(f"[*] Scanning network on {self.get_target()}")
         packet = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=f"{self.get_target()}/{parameter}")
         result = srp(packet, timeout=timeout, verbose=0)[0]
-        t = PrettyTable(['IP', 'MAC'])
+        t = PrettyTable(['IP', 'MAC', "VENDOR"])
         for sent, received in result:
-            t.add_row([received.psrc, received.hwsrc])
+            t.add_row([received.psrc, received.hwsrc, MacLookup().lookup(received.hwsrc)])
         self.printc(t)
         self.printg(f"[*] Finished my network scanning on {self.get_target()}")
 
@@ -933,7 +934,7 @@ atadogan06@gmail.com - onuratakan
         parser.add_argument('-icmpd', '--icmp_dos', type=int, nargs=1, metavar="Amount", help='icmp_dos DoS attack')
         parser.add_argument('-slowlorisd', '--slowloris_dos', type=int, nargs=1, metavar="Amount", help='slowloris_dos attack')
 
-        parser.add_argument('-wsd', '--webservicedetection', action="store_true", help='Wordpress detection')
+        parser.add_argument('-wsd', '--webservicedetection', action="store_true", help='Web service detection')
 
         parser.add_argument('-wpus', '--wordpressuser', action="store_true", help='Wordpress user detection with json')
         parser.add_argument('-wpap', '--wordpressadminpage', action="store_true", help='Wordpress admin page detection')

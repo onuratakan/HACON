@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name='HACON',
-version='0.7.0',
+version='0.8.0',
 description="""Lots of cyber security tool""",
 long_description="""
 # HACON
@@ -62,7 +62,8 @@ install_requires=[
     "dnspython==2.1.0",
     "future==0.18.2",
     "python_whois==0.7.3",
-    "requests==2.25.1"
+    "requests==2.25.1",
+    "mac-vendor-lookup==0.1.11"
 ],
 entry_points = {
     'console_scripts': ['HACON=hacon.hacon:HACON.arguments'],
