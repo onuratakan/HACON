@@ -36,8 +36,7 @@ jobs:
         VERSION: ${{ github.event.release.tag_name }}    
       run: |
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-        cd .. 
-        docker build -t ghcr.io/onuratakan/hacon:latest -f Decentra-Network/docker/local/api/Dockerfile .
-        docker build -t ghcr.io/onuratakan/hacon:$VERSION -f Decentra-Network/docker/local/api/Dockerfile .  
+        docker build -t ghcr.io/onuratakan/hacon:latest .
+        docker build -t ghcr.io/onuratakan/hacon:$VERSION .
         docker push ghcr.io/onuratakan/hacon:latest
         docker push ghcr.io/onuratakan/hacon:$VERSION
